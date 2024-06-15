@@ -1,0 +1,289 @@
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  padding: 0;
+  margin: 0;
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+  white-space:nowrap;
+}
+body {
+  height: 100vh;
+  background-image: url(images/background.jpg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  min-height: 100vh;
+  -webkit-text-size-adjust: none;
+   -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+        text-size-adjust: none;
+  /**background:  linear-gradient(90deg, #ff95c8, #7FB1ED);
+  background-size: 100% 200%;
+  /**margin: auto;
+  width: 100vh;
+  max-width: 100vw;
+  min-width: 400px;*/
+}
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+/* @media only screen and (prefers-color-scheme: dark), (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+.tablemobile {
+    overflow-x: hidden;
+    display: block;
+}
+} */
+td.bck {
+  background-image:url('images/scratch.png');
+  background-size:contain;
+
+}
+.pagetop h1 {
+font-family: "Yesteryear", cursive;
+display:flexbox;
+font-weight: 400;
+flex-direction: column;
+font-size: calc(4rem + 1vw);
+text-align: center;
+text-shadow: 2px 2px #FFFFFF;
+} 
+.pagetop h3 {
+font-family: "Shadows Into Light", sans-serif;
+flex-direction: column;
+font-size:7vmin;
+color: #797979 !important;
+text-align: center;
+font-weight: 400;
+text-shadow: 2px 2px #FFFFFF;
+
+} 
+.pagetop h4 {
+  font-family: "Roboto", sans-serif;
+  background-color: #FFFFFF;
+  display:flex;
+  font-weight: 400;
+  color: #000000;
+  flex-direction: column;
+  font-size: 1.5vh;
+  text-align: center;
+  white-space:normal;
+  } 
+  .tabletop h4 {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    color: #000000;
+    flex-direction: column;
+    font-size:4vmin;
+    text-align: center;
+    } 
+#scratcher-box {
+  width:22em;
+  align-content: center;
+  height:22em;
+  /*background-color: #FFFFFF;*/
+  position:absolute;
+  transform: translate(-50%, -50%);
+  top: 70%;
+  left: 50%;
+}
+/* Styles for mobile phones */ 
+@media (max-width: 320px) { 
+  
+  .pagetop {
+    scale: 0.85;
+  }
+  .pagetop h4 {
+    font-size: calc(0.7rem + 0.6vw) ;
+  }
+  #scratcher-box {
+    scale: 0.8;
+    left: 40%;    
+  }
+}
+
+@media (min-width: 321px), (max-width:1024){ 
+  .pagetop h4 {
+    font-size: calc(0.7rem + 1vw) ;
+  }
+}
+
+@media (min-width: 760px){ 
+
+}
+@media (min-width: 1025px){ 
+  .pagetop h4 {
+    font-size: 2vh;
+  }
+  
+}
+#scratcher-box canvas {
+  cursor: grab;
+  }
+table { 
+  table-layout:fixed;
+  /**transform: translate(0%, 50%);
+  top: 75%;
+  left: 10%;*/
+}
+#scratcher1, #scratcher2, #scratcher3, #scratcher4, #scratcher5, #scratcher6, #scratcher7, #scratcher8, #scratcher9 {
+  width: 100%;
+  padding: 5px;
+  /* border: 1px;
+    border-color: #000000;
+    border-style: solid; */
+}
+
+#scratcher-bottom-margin {
+  display:block;
+  position: fixed;
+  text-align: right;
+  bottom: 1px;
+  right: 1px;
+  } 
+
+#resetbutton {
+border: none;
+padding: 10px 20px;
+color: #FFFFFF;
+cursor: pointer;
+transition: all 200ms ease-in-out;
+transition-duration: 200ms;
+transition-timing-function: ease-in-out;
+transition-delay: 0s;
+border-radius:1cap;
+text-align: center;
+text-decoration: none;
+display:block;
+font-size: 2vh;
+margin: auto;
+}
+#resetbutton:hover {
+  color: #000000;
+  background-color: snow!important;
+}
+#baby{
+  font-weight: 600;
+}
+/* modal window styles */
+button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+button:hover {
+  opacity:1;
+}
+
+/* Float cancel and delete buttons and add an equal width */
+.nosoundbtn, .withsoundbtn {
+  float: left;
+  width: 50%;
+}
+
+/* Add a color to the cancel button */
+.nosoundbtn {
+  background-color: #ccc;
+  color: black;
+}
+
+/* Add a color to the delete button */
+.withsoundbtn {
+  background-color: #45a14d;
+}
+
+/* Add padding and center-align text to the container */
+.container {
+  padding: 16px;
+  text-align: center;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: #afafafee;
+  padding-top: 50px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #888;
+  width: 60%; /* Could be more or less, depending on screen size */
+  word-break: break-word;
+}
+h2 {
+  color: #000000 !important;
+  font-weight: 100;
+  white-space: normal;
+}
+/* Style the horizontal ruler */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+ 
+/* The Modal Close Button (x) */
+.close {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #f1f1f1;
+}
+
+.close:hover,
+.close:focus {
+  color: #f44336;
+  cursor: pointer;
+}
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Change styles for cancel button and delete button on extra small screens */
+@media screen and (max-width: 360px) {
+  .nosoundbtn, .withsoundbtn {
+    font-size: 5vw; 
+    width: 100%;
+  }
+  h2{
+    font-size: 6vw;
+  }
+}
