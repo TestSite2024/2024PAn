@@ -158,6 +158,8 @@ Scratcher = (function() {
             
             mainctx.globalCompositeOperation = 'source-in';
             mainctx.drawImage(this.image.back.img, 0, 0,this.image.back.img.width, this.image.back.img.height,0,0,this.canvas.temp.width,this.canvas.temp.height);
+            drawctx.globalCompositeOperation = 'source-over';
+            drawctx.drawImage(this.image.back.img, 0, 0,this.image.back.img.width, this.image.back.img.height,0,0,this.canvas.temp.width,this.canvas.temp.height);
             
         }
         return count / total;
