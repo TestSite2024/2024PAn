@@ -76,14 +76,19 @@ Scratcher = (function() {
      * Construct a new scratcher object
      *
      * @param canvasId [string] the canvas DOM ID, e.g. 'canvas2'
+     * @param cmessage [string] canvas message text
      * @param backImage [string, optional] URL to background (bottom) image
      * @param frontImage [string, optional] URL to foreground (top) image
+     * @param shape [string] scratcher shape
+     * @param containslongw {boolean}
+     * @param pixels
+     * @param triggered {boolean}
      */
-    function Scratcher(canvasId, backImage, frontImage) {
+    function Scratcher(canvasId, backImage, frontImage, cmessage) {
         this.canvas = {
             'main': $('#' + canvasId).get(0),
             'temp':null,
-            'draw':null
+            'draw':null,
         };
         this.mouseDown = false;
 
@@ -92,7 +97,7 @@ Scratcher = (function() {
         this._setupCanvases(); // finish setup from constructor now
     
         this.setImages(backImage, frontImage);
-        
+        this.containslongw=false;
 
     
         this._eventListeners = {};
@@ -111,7 +116,15 @@ Scratcher = (function() {
             this._loadImages(); // start image loading from constructor now
         }
     };
-    
+    Scratcher.prototype.setText = function(cmessage) {
+        this.cmessage = cmessage;
+    };
+    Scratcher.prototype.getLW = function() {
+        return containslongw;
+    };
+    Scratcher.prototype.setShape = function(shape) {
+        this.shape = shape;
+    };
     /**
      * Returns how scratched the scratcher is
      *
@@ -127,19 +140,14 @@ Scratcher = (function() {
         var can = this.canvas.draw;
         var ctx = can.getContext("2d", { willReadFrequently: true });
         var count, total;
-        var pixels, pdata;
-        var mrb ="RGVtbyBNb2Rl";
-        var rb= 'c3VycHJpc2U=';
-        //var end = window.btoa( rb ); 
-        var end = window.atob( rb );
-        var esg = window.atob( mrb );
-        $('#' + end).text(esg);
+        var pdata;
+    
         if (!stride || stride < 1) { stride = 1; }
     
         stride *= 4; // 4 elements per pixel
         
-        pixels = ctx.getImageData(0, 0, can.width, can.height);
-        pdata = pixels.data;
+        this.pixels = ctx.getImageData(0, 0, can.width, can.height);
+        pdata = this.pixels.data;
         l = pdata.length; // 4 entries per pixel
     
         total = (l / stride)|0;
@@ -149,20 +157,54 @@ Scratcher = (function() {
                 count++;
             }
         }
-        var n = count/total;
+        /* var n = count/total;
         n= (n*100)| 0;
-        if (n>23){
-
-            var mainctx = this.canvas.main.getContext('2d');
-            var drawctx = this.canvas.draw.getContext('2d');
+         if (n>30){
+            //ctx.clearRect(0, 0, can.width, can.height);
+             ctx.fillStyle = '#0'
+             ctx.beginPath();
+             ctx.fillRect(0,0,can.width,can.height); */
+             //var mainctx = this.canvas.main.getContext('2d');
+         
             
-            mainctx.globalCompositeOperation = 'source-in';
-            mainctx.drawImage(this.image.back.img, 0, 0,this.image.back.img.width, this.image.back.img.height,0,0,this.canvas.temp.width,this.canvas.temp.height);
-            drawctx.globalCompositeOperation = 'source-over';
-            drawctx.drawImage(this.image.back.img, 0, 0,this.image.back.img.width, this.image.back.img.height,0,0,this.canvas.temp.width,this.canvas.temp.height);
+             //var drawctx = this.canvas.draw.getContext('2d');
+            //mainctx.globalCompositeOperation = 'source-in';
+            //mainctx.drawImage(this.image.back.img, 0, 0,this.image.back.img.width, this.image.back.img.height,0,0,this.canvas.temp.width,this.canvas.temp.height);
+            //drawctx.globalCompositeOperation = 'source-over';
+            //drawctx.drawImage(this.image.back.img, 0, 0,this.image.back.img.width, this.image.back.img.height,0,0,this.canvas.temp.width,this.canvas.temp.height);
             
+        //} 
+        return count/total;
+    };
+     /**
+     * Draw a scratch line
+     * 
+     * Dispatches the 'scratch' event.
+     *
+     * @param x,y the coordinates
+     * @param fresh start a new line if true
+     */
+     Scratcher.prototype.scratchLine = function(x, y, fresh) {
+        var can = this.canvas.draw;
+        var ctx = can.getContext('2d', { willReadFrequently: true });
+        
+        //can.getContext("2d", { willReadFrequently: true });
+        ctx.lineWidth = 30;
+        ctx.lineCap = ctx.lineJoin = 'round';
+        ctx.strokeStyle = '#f00'; //'rgba(0, 0, 0, 0.03)'; // can be any opaque color
+        
+        if (fresh) {
+            ctx.beginPath();
+            // this +0.01 hackishly causes Linux Chrome to draw a
+            // "zero"-length line (a single point), otherwise it doesn't
+            // draw when the mouse is clicked but not moved:
+            ctx.moveTo(x+0.01, y);
         }
-        return count / total;
+        ctx.lineTo(x, y);
+        ctx.stroke();
+    
+        // call back if we have it
+        this.dispatchEvent(this.createEvent('scratch'));
     };
     
     /**
@@ -188,48 +230,108 @@ Scratcher = (function() {
      * arbitrary-sized images, whereas in its current form, it will dog out
      * if the images are large.
      */
-   
-    Scratcher.prototype.recompositeCanvases = function() {
+    Scratcher.prototype.recompositeCanvases = function(clear) {
         var tempctx = this.canvas.temp.getContext('2d');
         var mainctx = this.canvas.main.getContext('2d');
+        var drawctx = this.canvas.draw.getContext('2d');
+        //var offCanvas = document.createElement('canvas');
         var w = this.canvas.temp.width;
         var h =this.canvas.temp.height;
-    
+        var background = new Image();
+        background.src = '/images/scratch.png';
         // Step 1: clear the temp
         this.canvas.temp.width = this.canvas.temp.width; // resizing clears
         this.canvas.main.width = this.canvas.main.width; // resizing clears
-
+        //offCanvas.width = this.canvas.main.width; // resizing clears
+        //offCanvas.height = this.canvas.main.height; // resizing clears
         tempctx.save();
         tempctx.beginPath();
-        draw(tempctx,w*0.5,0,w,w);
+        switch(this.shape) {
+            case 'heart':
+                drawHeart(tempctx,w*0.5,0,w,w);
+                break;
+            case 'square':
+                drawRect(tempctx,0,0,w,w);
+                break;
+            case 'circle':
+                tempctx.arc(w*0.5, w*0.5, w*0.5, 0, Math.PI * 2, true);
+                break;
+            default:
+                tempctx.arc(w*0.5, w*0.5, w*0.5, 0, Math.PI * 2, true);
+            }
         tempctx.closePath();
         tempctx.clip();
         // Step 2: stamp the draw on the temp (source-over)
+        if(clear) {
+            drawctx.globalCompositeOperation = 'source-over';
+            drawctx.drawImage(this.image.back.img, 0, 0,this.image.back.img.width, this.image.back.img.height,0,0,w,h);
+        }
         tempctx.drawImage(this.canvas.draw, 0, 0);
         tempctx.beginPath();
-        draw(tempctx,w*0.5,0,w,w);
-
+        switch(this.shape) {
+            case 'heart':
+                drawHeart(tempctx,w*0.5,0,w,w);
+                break;
+            case 'square':
+                drawRect(tempctx,0,0,w,w);
+                break;
+            case 'circle':
+                tempctx.arc(w*0.5, w*0.5, w*0.5, 0, Math.PI * 2, true);
+                break;
+            default:
+                tempctx.arc(w*0.5, w*0.5, w*0.5, 0, Math.PI * 2, true);
+            }
         tempctx.clip();
         tempctx.closePath();
-        tempctx.restore();
+        
+        //tempctx.restore();
         // Step 3: stamp the background on the temp (!! source-atop mode !!)
-        tempctx.globalCompositeOperation = 'source-atop';
-        tempctx.drawImage(this.image.back.img, 0, 0,this.image.back.img.width, this.image.back.img.height,0,0,w,h);
+        if (!clear) {
+            tempctx.globalCompositeOperation = 'source-atop';
+            tempctx.drawImage(this.image.back.img, 0, 0,this.image.back.img.width, this.image.back.img.height,0,0,w,h);
+        } 
         mainctx.save();
         mainctx.beginPath();
-        draw(mainctx,w*0.5,0,w,w);
+        switch(this.shape) {
+            case 'heart':
+                drawHeart(mainctx,w*0.5,0,w,w);
+                break;
+            case 'square':
+                drawRect(mainctx,0,0,w,w);
+                break;
+            case 'circle':
+                mainctx.arc(w*0.5, w*0.5, w*0.5, 0, Math.PI * 2, true);
+                break;
+            default:
+                mainctx.arc(w*0.5, w*0.5, w*0.5, 0, Math.PI * 2, true);
+            }
         mainctx.closePath();
         mainctx.clip();
         // Step 4: stamp the foreground on the display canvas (source-over)
         mainctx.drawImage(this.image.front.img, 0, 0,this.image.front.img.width, this.image.front.img.height,0,0,this.canvas.temp.width,this.canvas.temp.height);
-        mainctx.clip();
-        mainctx.closePath();
-        mainctx.restore();
+        switch(this.shape) {
+            case 'heart':
+                break;
+            case 'circle':
+                mainctx.arc(0, 0, w*0.5, 0, Math.PI * 2, true);
+                break;
+            default:
+                mainctx.arc(0, 0, w*0.5, 0, Math.PI * 2, true);
+            }
+       
+        //tempctx.restore();
         // Step 5: stamp the temp on the display canvas (source-over)
+        mainctx.globalCompositeOperation = 'source-over';
+
         mainctx.drawImage(this.canvas.temp, 0, 0);
+        mainctx.drawImage(background,0,0,w,h);
+
 
     };
-    function draw(context, x, y, width, height){
+    function drawRect(context,x,y,width,height) {
+        context.rect(x,y,width,height);
+    }
+    function drawHeart(context, x, y, width, height){
         let topCurveHeight = height * 0.3;
         context.moveTo(x, y + topCurveHeight);
         // top left curve
@@ -260,36 +362,62 @@ Scratcher = (function() {
         
         
 
-    };
-    /**
-     * Draw a scratch line
-     * 
-     * Dispatches the 'scratch' event.
-     *
-     * @param x,y the coordinates
-     * @param fresh start a new line if true
-     */
-    Scratcher.prototype.scratchLine = function(x, y, fresh) {
-        var can = this.canvas.draw;
-        var ctx = can.getContext('2d');
-        
-        can.getContext("2d", { willReadFrequently: true });
-        ctx.lineWidth = 21;
-        ctx.lineCap = ctx.lineJoin = 'round';
-        ctx.strokeStyle = '#f00'; // can be any opaque color
-        if (fresh) {
-            ctx.beginPath();
-            // this +0.01 hackishly causes Linux Chrome to draw a
-            // "zero"-length line (a single point), otherwise it doesn't
-            // draw when the mouse is clicked but not moved:
-            ctx.moveTo(x+0.01, y);
+    }
+    function printAtWordWrap( offCanvas, context , text, x, y, lineHeight, fitWidth,indent)
+{
+    fitWidth = fitWidth || 0;
+    //context.textAlign="center";
+    let offCtx = offCanvas.getContext("2d");
+
+    offCtx.font = context.font; // Copy font settings
+    offCtx.fillStyle = context.fillStyle; // Copy fill style
+    offCtx.textAlign = "center";
+    offCtx.textBaseline = "top"; 
+    var words = text.split(" ");
+    var currentLine = 0;
+    var idx = 1;
+    var lw = false;
+    var lwcount = 0;
+
+    for (let index = 0; index < words.length; index++) {
+        if (words[index].length > 9) {
+            lwcount++;
         }
-        ctx.lineTo(x, y);
-        ctx.stroke();
-    
-        // call back if we have it
-        this.dispatchEvent(this.createEvent('scratch'));
-    };
+    }
+
+    while (words.length > 0 && idx <= words.length) {
+        var str = words.slice(0, idx).join(" ");
+        var st = words.slice(idx - 1, idx).join(" ");
+        var w = offCtx.measureText(str).width;
+
+        if (offCtx.measureText(st).width > fitWidth - (currentLine * Math.pow(indent, 1.55)) || (lwcount > 5 && currentLine > 5 && indent > 2)) {
+            this.containslongw = true;
+            lw = true;
+        }
+        if (w > fitWidth - (currentLine * Math.pow(indent, 1.55))) {
+            if (idx == 1) {
+                idx = 2;
+            }
+            offCtx.fillText(words.slice(0, idx - 1).join(" "), fitWidth / 2, lineHeight * currentLine);
+            currentLine++;
+            words = words.splice(idx - 1);
+            idx = 1;
+        } else {
+            idx++;
+        }
+    }
+    if (idx > 0) {
+        offCtx.fillText(words.join(" "), fitWidth / 2, lineHeight * currentLine);
+    }
+    if (!lw) {
+        this.containslongw = false;
+    }
+    //alert(lwcount+ " "+currentLine);
+     // Now draw this offscreen canvas as an image onto the main canvas
+     context.drawImage(offCanvas, x-fitWidth/2, y-lineHeight);
+}
+  
+   
     /**
      * Set up the main canvas and listeners
      */
@@ -309,10 +437,11 @@ Scratcher = (function() {
          * Dispatches the 'scratchesbegan' event.
          */
         function mousedown_handler(e) {
+            if (this.triggered) {return;}
             var local = getLocalCoords(c, getEventCoords(e));
             this.mouseDown = true;
             this.scratchLine(local.x, local.y, true);
-            this.recompositeCanvases();
+            this.recompositeCanvases(false);
             
             this.dispatchEvent(this.createEvent('scratchesbegan'));
             
@@ -326,12 +455,14 @@ Scratcher = (function() {
          * the canvas
          */
         function mousemove_handler(e) {
+            if (this.triggered) {return;}
+
             if (!this.mouseDown) { return true; }
     
             var local = getLocalCoords(c, getEventCoords(e));
     
             this.scratchLine(local.x, local.y, false);
-            this.recompositeCanvases();
+            this.recompositeCanvases(false);
     
             return false;
         };
@@ -342,6 +473,8 @@ Scratcher = (function() {
          * Dispatches the 'scratchesended' event.
          */
         function mouseup_handler(e) {
+            if (this.triggered) {return;}
+
             if (this.mouseDown) {
                 this.mouseDown = false;
     
@@ -353,6 +486,7 @@ Scratcher = (function() {
             return true;
         };
     
+        
         $(c).on('mousedown', mousedown_handler.bind(this))
             .on('touchstart', mousedown_handler.bind(this));
         $(document).on('mousemove', mousemove_handler.bind(this));
@@ -371,13 +505,75 @@ Scratcher = (function() {
     Scratcher.prototype.reset = function() {
         // clear the draw canvas
         this.canvas.draw.width = this.canvas.draw.width;
-    
-        this.recompositeCanvases();
+        this.pixels=null;
+        this.triggered=false;
+        this.recompositeCanvases(false);
     
         // call back if we have it
         this.dispatchEvent(this.createEvent('reset'));
     };
-    
+    Scratcher.prototype.clear = function() {
+        this.triggered = true;
+        this.recompositeCanvases(true);
+    }
+    Scratcher.prototype.resetnoclear = async function(clear) {
+        var c = this.canvas.main;
+        var cc = this.canvas.temp;
+        const resizeWidth = c.width >> 0
+        const resizeHeight = c.height >> 0
+       
+        var ratio=1;
+        
+        if (this.pixels && !clear){
+            
+           /*  const ibm = await window.createImageBitmap(this.pixels, 0, 0, this.canvas.draw.width, this.canvas.draw.width, {
+                resizeWidth, resizeHeight
+              })
+
+            if (c.width>cc.width) {
+                ratio = cc.width / c.width;
+            } else {
+                ratio = c.width / cc.width;
+            }
+        
+            this.canvas.temp.width  = this.canvas.draw.width = c.width;
+            this.canvas.temp.height = this.canvas.draw.height = c.height;
+
+            var ctx = this.canvas.draw.getContext('2d');
+         
+            ctx.drawImage(ibm,0,0);
+            this.pixels = ctx.getImageData(0,0,c.width,c.height); */
+            var newCanvas = $("<canvas>")
+            .attr("width", cc.width)
+            .attr("height", cc.height)[0];
+
+            newCanvas.getContext("2d").putImageData(this.pixels, 0, 0);
+
+            // Second canvas, for scaling
+            var scaleCanvas = $("<canvas>")
+            .attr("width", c.width)
+            .attr("height", c.height)[0];
+            var scaleCtx = scaleCanvas.getContext("2d");
+            ratio = c.width / cc.width;
+
+            scaleCtx.scale(ratio, ratio);
+            scaleCtx.drawImage(newCanvas, 0, 0);
+
+            this.pixels =  scaleCtx.getImageData(0, 0, scaleCanvas.width, scaleCanvas.height);
+            this.canvas.temp.width  = this.canvas.draw.width = c.width;
+            this.canvas.temp.height = this.canvas.draw.height = c.height;
+
+            var ctx = this.canvas.draw.getContext('2d');
+            ctx.putImageData(this.pixels, 0, 0);
+
+
+        } else {
+            this.canvas.temp.width = this.canvas.draw.width = c.width;
+            this.canvas.temp.height = this.canvas.draw.height = c.height;
+            
+        }
+        this.recompositeCanvases(clear);
+    };
     /**
      * returns the main canvas jQuery object for this scratcher
      */

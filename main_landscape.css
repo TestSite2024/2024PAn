@@ -11,9 +11,14 @@ html {
   box-sizing: inherit;
   white-space:nowrap;
 }
+/* td.bck {
+  background-image:url('images/scratch.png');
+  background-size:contain;
+
+} */
 body {
   height: 100vh;
-  background-image: url(images/background.jpg);
+  position: relative;
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: fixed;
@@ -41,110 +46,253 @@ body {
 }
 } */
 
-
 .pagetop{
-  position:relative;
+  position:absolute;
   display: block;
-  transform: translate(0%,-50%);
+  /* -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  -moz-transform: translate(0%,-50%);
+  -o-transform: translate(0%,-50%);
+  transform: translate(0%,-50%); */
   /* background-color: #FFFFFF; */
-  top: 45%;
+  top: 5%;
+  display: inline-table;
+
 }
 .pagetop h1 {
-font-family: "Yesteryear", cursive;
-display:flexbox;
-font-weight: 400;
+  display:flexbox;
 flex-direction: column;
-font-size: calc(4rem + 1.5vw);
+font-size: calc(5rem + 0.8vw);
 text-align: right;
-padding-right: 1%;
-text-shadow: 2px 2px #FFFFFF;
-} 
+padding-right: 5px;
+white-space: normal;
+
+}
+
 .pagetop h3 {
-font-family: "Shadows Into Light",sans-serif;
-display: block;
-color: #585858 !important;
-font-style: normal;
-flex-direction: column;
-font-size:5vmin;
+color: #000000 !important;
+font-size: calc(1rem + 1vw);
 text-align: right;
-padding-right: 1%;
-font-weight: 200;
-text-shadow: 2px 2px #FFFFFF;
-
-
 } 
 .pagetop h4 {
-  font-family: "Roboto", sans-serif;
   display:inline;
   font-weight: 400;
   color: #000000;
-  font-size: 2.5vmin;
+  font-size: 3vmin;
   text-align: right;
   /* position: absolute;
   right: 50%;
   transform: translateX(100%);
   white-space:pre-wrap; */
   float:right;
-  }
-  h4 span {
-    /*white-space:pre-wrap;*/
-    background-color: #FFFFFF;
-
-  }
+  
+}  
   .tabletop h4 {
-    font-family: "Roboto", sans-serif;
     font-weight: 400;
     color: #000000;
     flex-direction: column;
     font-size:4vmin;
     text-align: right;
-    padding-right: 10%;
-    } 
+} 
+#title {
+  padding-top: 0px;
+}
+#surprise{
+  line-height: 1;
+  display:inline-flex;
+  /*padding-right: 5px; */
+  justify-content:center;
+
+
+  width: 55%;
+}
+#reveal {
+  float: right;
+  display: inline-table;
+  padding-right: 10px;
+  width: calc(50% - 10px);
+}
+
 #scratcher-box {
-  width:22em;
+  width:20em;
   align-content: left;
-  height:22em;
+  height:20em;
   position:absolute;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
   transform: translateY(-50%);
   /* background-color: #FFFFFF; */
-  top: 55%;
-  left: 0%;
+  top: 50%;
+  left: 2%;
   border-radius: 5%;
 }
 /* Styles for mobile phones */ 
-@media (max-height:318px), (max-width:620){ 
-  
-  .pagetop h4 {
-    font-size: calc(0.5rem + 0.55vw);
-  }
-  .pagetop h3 {
-    font-size: calc(0.7rem + 1vw);
-  }
-  #scratcher-box {
-    scale: 0.8;
-    top:40% ;
-  } 
 
+@media (max-width:620px){ 
+  
+  #reveal {
+    width: calc(45% - 10px);
+
+  }
 }
-@media (min-height: 352px), (max-height: 400px) { 
+
+@media (max-height: 320px){ 
+  .pagetop h1 {
+    font-size: 5rem;
+  }
   .pagetop h4 {
     font-size: calc(0.5rem + 0.70vw);
   }
   .pagetop h3 {
-    font-size: calc(0.7rem + 1.5vw);
+    font-size: calc(1rem + 1vw);
   }
   #scratcher-box {
-    scale: 0.95;
-    top: 60%
+    width: 18em;
+    height: 18em;
+    top: 50%;
+    left: 2%;
+  }
+  #reveal {
+    width: calc(50% - 10px);
+
+  }
+  .pagetop {
+    top:0%;
+  }
+  
+}
+
+/* thin wide screens */
+@media (max-height:272px) and (min-width: 672px){ 
+  .pagetop h1 {
+    font-size: 4rem;
+  }
+  .pagetop h3 {
+    font-size: calc(1rem + 0.8vw);
+  }
+  #scratcher-box {
+    width: 17em;
+    height: 17em;
+    top: 52%;
+    left: 3%;
+  } 
+  #surprise {
+    width: 55%
+  }
+} 
+
+/*thin small phones iphone 5-6 etc */
+@media (max-height:272px) and (max-width:568px){ 
+  .pagetop h1 {
+    font-size: calc(4rem);
+  }
+  
+  .pagetop h3 {
+    font-size: calc(1rem + 0.8vw);
+  }
+  #scratcher-box {
+    width: 15em;
+    height: 15em;
+    top: 52%;
+    left: 1%;
+  } 
+  #surprise{
+    line-height: 0.8;
+    padding-right: 0px;
+    width: 50%
+  }
+} 
+
+/*normal size phones */
+@media (min-height: 300px) and (max-width: 702px) { 
+  .pagetop h1 {
+    font-size: 4.5rem;
+  }
+  .pagetop h4 {
+    font-size: calc(0.5rem + 0.70vw);
+  }
+  .pagetop h3 {
+    font-size: calc(1rem + 1vw);
+  }
+  #surprise{
+    padding-right: 0px;
+    width: 55%
+  }
+  #reveal {
+    width: calc(50% - 10px);
+
+  }
+  #scratcher-box {
+    width: 18em;
+    height: 18em;
+    top: 50%;
+    left: 1%;
   }
 }
-@media (max-height:351px), (min-height:319){ 
+
+
+@media (min-height:321px) and (max-width:760px){ 
+  .pagetop h1 {
+    font-size: 5rem;
+  }
+  .pagetop h3 {
+    font-size: calc(1rem + 1vw);
+  }
+  #scratcher-box {
+    width: 19em;
+    height: 19em;
+    top: 50%;
+    left: 2%;
+  } 
+}
+
+/*large screen phones like iphone max plus etc */
+@media (min-height:321px) and (min-width: 761px) { 
+  .pagetop h1 {
+    font-size: calc(5rem + 0.8vw);
+  }
+  .pagetop h4 {
+    font-size: calc(0.5rem + 0.70vw);
+  }
+  .pagetop h3 {
+    font-size: calc(1rem + 1vw);
+  }
+  #scratcher-box {
+    width: 21em;
+    height: 21em;
+    top: 50%;
+    left: 2%;
+  }
+  #t1
+  {
+    width: calc(55% - 10px);
+  }
+  #reveal {
+    width: calc(55% - 10px);
+  }
+}
+
+/* @media (max-height:351px) and (min-height:319){ 
   
   #scratcher-box {
     scale: 0.9;
-    top:50% ;
+    top: 50%;
   }
-}
+  .pagetop h1 {
+    font-size: calc(3rem + 0.55vw);
+  }
+  #t1
+  {
+    width: calc(40% - 10px);
+
+  }
+  #reveal {
+    width: calc(45% - 10px);
+
+  }
+} */
 
 
 table { 
@@ -167,7 +315,7 @@ cursor: grab;
 }
 #scratcher1, #scratcher2, #scratcher3, #scratcher4, #scratcher5, #scratcher6, #scratcher7, #scratcher8, #scratcher9 {
   width: 100%;
-  padding: 5px;
+  padding: 0px;
   
 }
 #resetbutton {
@@ -183,14 +331,15 @@ border-radius:1cap;
 text-align: center;
 text-decoration: none;
 display:block;
-font-size: 2vh;
+font-size: 2vw;
 margin: auto;
 }
 #resetbutton:hover {
   color: #000000;
-  background:snow!important;
+  background: white !important;
   border: 1px solid transparent;
 }
+
 #baby{
   font-weight: 600;
 }

@@ -3,7 +3,8 @@
  *
  * depends on jQuery>=1.7
  */
-
+var canvas;
+var scratchers = [];
 (function () {
     /**
      * Returns true if this browser supports canvas
@@ -36,29 +37,30 @@
      */
     function checkpct() {
         if (!triggered) {
-            if (pct1 > 0 && pct1 < 23) {
+            if (pct1 > 15 && pct1 < 23) {
                 //document.getElementById("scratcher3Pct").innerHTML="Scratch MORE!";
-                if (!CrispyToast.clearall()) {
-                    CrispyToast.success('Scratch MORE!', { position: 'top-center' }, { timeout: 3000 });
+                if (CrispyToast.toasts.length===0) {
+                    CrispyToast.success('Scratch MORE!', { position: 'top-center', timeout: 2000});
                 }
             }
             if (pct1 > 23) {
                 $('#surprise').text(gendertext);
                 $('#surprise').css('color', colortxt);
-
+                if(CrispyToast.toasts.length!=0){
+                    CrispyToast.clearall();
+                }
+                scratchers[0].clear();
                 document.getElementsByTagName("body")[0].style.backgroundColor = color;
                 document.getElementsByTagName("body")[0].style.backgroundImage = 'none';
-                
+                document.getElementById("H3").insertAdjacentHTML('afterend', "<h4 id='testtext' style='white-space:normal'>Because this is a demo, message under scratch area appears only for 1 second. In the real product, it will clear after scratch.</h4>");
                 //document.getElementsByTagName("body")[0].style.backgroundImage.animation = 'gradient 15s ease infinite';
                 $('#H3').hide();
                 $('#H4').hide();
-                var mrb ="RGVtbyBNb2Rl";
-                var rb= 'c3VycHJpc2U=';
-                 //var end = window.btoa( rb ); 
-                end = window.atob( rb );
-                var esg = window.atob( mrb );
-                $('#' + end).text(esg);
+                setTimeout(function() {
+                    scratchers[0].reset();
+                  }, 100);
                 confetti_effect();
+ 
             }
         }
     };
@@ -120,7 +122,7 @@
     function onResetClicked(scratchers) {
         var i;
         pct1 = 0;
-
+        CrispyToast.toasts=[];
         $("#resetbutton").hide();
         for (i = 0; i < scratchers.length; i++) {
             scratchers[i].reset();
@@ -130,7 +132,7 @@
         $('#surprise').css('color', colortxt);
 
         document.getElementsByTagName("body")[0].style.backgroundImage = 'url(images/background.jpg)';
-
+        document.getElementById('testtext').remove();
         $('#H3').show();
         $('#H4').show();
         triggered = false;
@@ -138,10 +140,22 @@
         soundHandle.currentTime = 0;
         return false;
     };
-
+    function fitCanvastoDiv() {
+        var ttd = $(canvas).parent();
+        // var ttd = document.getElementById('scratcher-box');
+        canvas.width = ttd.width();
+        canvas.height = canvas.width;
+        if(scratchers[0]){ 
+            if (triggered) {
+            scratchers[0].resetnoclear(true);
+        } else {
+            scratchers[0].resetnoclear(false);
+        }
+        }
+    }
     function initPage() {
         var scratcherLoadedCount = 0;
-        var scratchers = [];
+        canvas = document.getElementById("scratcher1");
         var i, i1;
 
         // document.addEventListener('mousedown', setMousePos, false);
@@ -149,6 +163,15 @@
         //     cursor_x = event.pageX;
         //     cursor_y = event.pageY;
         //     }
+        $( window ).on({
+            orientationchange: function(e) {
+                fitCanvastoDiv();
+            },resize: function(e) {
+                fitCanvastoDiv();
+            }
+        });        
+        fitCanvastoDiv();
+
         surname = params.get('surname');
         if (surname != null && surname.replace(/\s/g, '').length) {
             $("#baby").text(' ' + surname + ' family!');
@@ -221,9 +244,9 @@
         };
 
         // create new scratchers
-        var scratchers = new Array(1);
+        scratchers = new Array(1);
 
-        for (i = 0; i < scratchers.length; i++) {
+       for (i = 0; i < scratchers.length; i++) {
             i1 = i + 1;
             scratchers[i] = new Scratcher('scratcher' + i1);
 
@@ -232,6 +255,8 @@
 
             scratchers[i].setImages('images/s' + i1 + 'bg.jpg',
                 'images/foreground.jpg');
+                scratchers[i].setShape('heart');
+
 
         }
 

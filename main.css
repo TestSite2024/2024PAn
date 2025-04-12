@@ -11,6 +11,71 @@ html {
   box-sizing: inherit;
   white-space:nowrap;
 }
+/* td.bck {
+  background-image:url('images/scratch.png');
+  background-size:contain;
+
+} */
+
+/* Light theme 
+:root {
+  --tp-base-background-color: hsla(230, 5%, 90%, 1.00);
+  --tp-base-shadow-color: hsla(0, 0%, 0%, 0.10);
+  --tp-button-background-color: hsla(230, 7%, 75%, 1.00);
+  --tp-button-background-color-active: hsla(230, 7%, 60%, 1.00);
+  --tp-button-background-color-focus: hsla(230, 7%, 65%, 1.00);
+  --tp-button-background-color-hover: hsla(230, 7%, 70%, 1.00);
+  --tp-button-foreground-color: hsla(230, 10%, 30%, 1.00);
+  --tp-container-background-color: hsla(230, 15%, 30%, 0.20);
+  --tp-container-background-color-active: hsla(230, 15%, 30%, 0.32);
+  --tp-container-background-color-focus: hsla(230, 15%, 30%, 0.28);
+  --tp-container-background-color-hover: hsla(230, 15%, 30%, 0.24);
+  --tp-container-foreground-color: hsla(230, 10%, 30%, 1.00);
+  --tp-groove-foreground-color: hsla(230, 15%, 30%, 0.10);
+  --tp-input-background-color: hsla(230, 15%, 30%, 0.10);
+  --tp-input-background-color-active: hsla(230, 15%, 30%, 0.22);
+  --tp-input-background-color-focus: hsla(230, 15%, 30%, 0.18);
+  --tp-input-background-color-hover: hsla(230, 15%, 30%, 0.14);
+  --tp-input-foreground-color: hsla(230, 10%, 30%, 1.00);
+  --tp-label-foreground-color: hsla(230, 10%, 30%, 0.70);
+  --tp-monitor-background-color: hsla(230, 15%, 30%, 0.10);
+  --tp-monitor-foreground-color: hsla(230, 10%, 30%, 0.50);
+}*/
+
+:root {
+  --tp-base-background-color: rgb(20, 165, 184);
+  --tp-base-shadow-color: hsla(0, 0%, 0%, 0.2);
+  --tp-button-background-color: hsla(0, 0%, 100%, 1.00);
+  --tp-button-background-color-active: hsla(0, 0%, 85%, 1.00);
+  --tp-button-background-color-focus: hsla(0, 0%, 90%, 1.00);
+  --tp-button-background-color-hover: hsla(0, 0%, 95%, 1.00);
+  --tp-button-foreground-color: hsla(230, 20%, 11%, 1.00);
+  --tp-container-background-color: hsla(0, 0%, 13%, 0.267);
+  --tp-container-background-color-active: hsla(0, 60%, 98%, 0.486);
+  --tp-container-background-color-focus: hsla(0, 4%, 85%, 0.3);
+  --tp-container-background-color-hover: hsla(0, 0%, 0%, 0.25);
+  --tp-container-foreground-color: hsla(0, 0%, 100%, 0.90);
+  --tp-groove-foreground-color: hsla(0, 0%, 0%, 0.50);
+  --tp-input-background-color: hsla(0, 0%, 0%, 0.50);
+  --tp-input-background-color-active: hsla(0, 0%, 0%, 0.65);
+  --tp-input-background-color-focus: hsla(0, 0%, 0%, 0.60);
+  --tp-input-background-color-hover: hsla(0, 0%, 0%, 0.55);
+  --tp-input-foreground-color: hsl(0, 0%, 100%);
+  --tp-label-foreground-color: hsl(0, 0%, 0%);
+  --tp-monitor-background-color: hsla(0, 0%, 0%, 0.50);
+  --tp-monitor-foreground-color: hsla(0, 0%, 100%, 0.50);
+}
+
+:root {
+  --tp-blade-value-width: 200px;
+  --pane-width: 300px;
+  --tp-container-unit-size: 20px;
+  --tp-container-unit-spacing: 4px;
+  --tp-container-foreground-color: #ffee00;
+  --f-size: 15px;
+  --fl-size: 15px;
+
+}
 body {
   height: 100vh;
   background-image: url(images/background.jpg);
@@ -20,29 +85,17 @@ body {
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
-  background-size: cover;
+  background-size:cover;
   min-height: 100vh;
+/*   background-size: auto 100%;
+  min-height: 100%; */
+
   -webkit-text-size-adjust: none;
    -moz-text-size-adjust: none;
     -ms-text-size-adjust: none;
         text-size-adjust: none;
-  /**background:  linear-gradient(90deg, #ff95c8, #7FB1ED);
-  background-size: 100% 200%;
-  /**margin: auto;
-  width: 100vh;
-  max-width: 100vw;
-  min-width: 400px;*/
-}
-@keyframes gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
+/* Prevent pull-down-to-refresh gesture */
+overscroll-behavior-y: contain; 
 }
 
 /* @media only screen and (prefers-color-scheme: dark), (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
@@ -51,88 +104,283 @@ body {
     display: block;
 }
 } */
-td.bck {
-  background-image:url('images/scratch.png');
-  background-size:contain;
 
-}
 .pagetop h1 {
 font-family: "Yesteryear", cursive;
 display:flexbox;
-font-weight: 400;
 flex-direction: column;
-font-size: calc(4rem + 1vw);
-text-align: center;
-text-shadow: 2px 2px #FFFFFF;
-} 
-.pagetop h3 {
-font-family: "Shadows Into Light", sans-serif;
-flex-direction: column;
-font-size:7vmin;
-color: #797979 !important;
-text-align: center;
+font-size: 5rem;
 font-weight: 400;
-text-shadow: 2px 2px #FFFFFF;
+text-align: center;
+white-space: normal;
+padding-inline-end: 10px;
+padding-inline-start: 10px;
+text-shadow: -1px -1px 0 #d8d8d8, 1px -1px 0 #6d6d6d, -1px 1px 0 #555555, 1px 1px 0 #464645,  2px  6px 6px #757575, 4px  8px 6px #fffdfd;
 
 } 
-.pagetop h4 {
+
+.pagetop h3 {
+  font-family: "Shadows Into Light", sans-serif;
+  flex-direction: column;
+font-size:calc(1.5rem + 0.6vw);
+font-weight: 400;
+color: #000000 !important;
+text-align: center;
+white-space:normal;
+padding-left: 5px;
+padding-right: 5px;
+
+
+} 
+h4 {
   font-family: "Roboto", sans-serif;
-  background-color: #FFFFFF;
   display:flex;
   font-weight: 400;
   color: #000000;
   flex-direction: column;
-  font-size: 1.5vh;
+  font-size:calc(1rem + 0.6vw);
   text-align: center;
   white-space:normal;
   } 
-  .tabletop h4 {
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
-    color: #000000;
-    flex-direction: column;
-    font-size:4vmin;
-    text-align: center;
-    } 
+ 
+#title {
+  padding-top: 15px;
+}
+#reveal {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+#surprise{
+  line-height: 1;
+  text-align: center;
+  display: inline-flex;
+}
+
 #scratcher-box {
-  width:22em;
+  width:20em;
   align-content: center;
-  height:22em;
+  height:20em;
+  display: block;
+  background-image:    url(/images/scratch.png);
+  background-size:     cover;                      
+  background-repeat:   no-repeat;
+  background-position: center center;
   /*background-color: #FFFFFF;*/
   position:absolute;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  top: 70%;
+  top: 75%;
   left: 50%;
 }
-/* Styles for mobile phones */ 
-@media (max-width: 320px) { 
-  
-  .pagetop {
-    scale: 0.85;
-  }
-  .pagetop h4 {
-    font-size: calc(0.7rem + 0.6vw) ;
-  }
-  #scratcher-box {
-    scale: 0.8;
-    left: 40%;    
-  }
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: #afafafee;
+  padding-top: 50px;
 }
 
-@media (min-width: 321px), (max-width:1024){ 
-  .pagetop h4 {
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #888;
+  width: 90%; /* Could be more or less, depending on screen size */
+  word-break: break-word;
+}
+h2 {
+  color: #000000 !important;
+  font-weight: 100;
+  white-space: normal;
+
+}
+/* Style the horizontal ruler */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+ 
+/* The Modal Close Button (x) */
+.close {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #f1f1f1;
+}
+
+.close:hover,
+.close:focus {
+  color: #f44336;
+  cursor: pointer;
+}
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+/* Styles for mobile phones */ 
+
+/* work on this one */
+
+/* 
+@media (min-width: 376px), (max-width:1024px){ 
+  h4 {
     font-size: calc(0.7rem + 1vw) ;
   }
+  .pagetop h1 {
+    font-size: calc(4rem);
+  }
+  #scratcher-box {
+    width: 20em;
+    height: 20em; 
+    top: 75%;
+  } 
+} */
+
+@media (min-width: 425px){ 
+  h3 {
+    font-size:calc(1.5rem + 0.5vw);
+  }
+  .pagetop h1 {
+    font-size: calc(5rem + 2vw);
+  }
+  #scratcher-box {
+    width: 22em;
+    height: 22em; 
+    top: 75%;
+  } 
+}
+ @media (max-width: 424px) {
+
+  .pagetop h1 {
+    font-size: calc(5rem + 1vw);
+  }
+ 
+  .pagetop h3 {
+    font-size: calc(1.5rem + 0.5vw);
+  }
+  #scratcher-box {
+    width: 21em;
+    height: 21em; 
+    top: 75%;
+  } 
+}  
+
+@media (min-width: 768px) and (min-height: 930px){ 
+  
+  .pagetop h3 {
+    font-size: calc(1.5rem + 1.2vw);
+  }
+  .pagetop h1 {
+    font-size: calc(6rem + 4vw);
+  }
+
+  #scratcher-box {
+    position:absolute;
+    width: 30em;
+    height: 30em; 
+    top: 75%;
+  } 
+ 
+  .modal-content {
+    width: 50%; /* Could be more or less, depending on screen size */
+  }
 }
 
-@media (min-width: 760px){ 
+/* landscape tablet mode */
+@media (min-height: 675px) and (min-width: 1024px){ 
+  .pagetop h3 {
+    font-size: calc(1.5rem + 1.2vh);
+  } 
+  .pagetop h1 {
+    font-size: calc(6rem + 2vw);
+  }
 
+  #surprise{
+    /*line-height: 15vh;*/
+    line-height: 1.2;
+  }
+  #scratcher-box {
+    position:absolute;
+    width: 28em;
+    height: 28em; 
+    top: 70%;
+  }
+  .modal-content {
+    width: 60%; /* Could be more or less, depending on screen size */
+  }
 }
-@media (min-width: 1025px){ 
-  .pagetop h4 {
-    font-size: 2vh;
+
+@media (max-width: 393px) {
+
+  .pagetop h1 {
+    font-size: calc(5rem);
+  }
+    .pagetop h3 {
+    font-size: calc(1.3rem + 0.5vw);
+  }
+
+  #scratcher-box {
+    position:absolute;
+    width: 20em;
+    height: 20em; 
+    top: 76%;
   }
   
+} 
+
+
+@media (max-width: 375px) {
+
+  .pagetop h1 {
+    font-size: calc(4rem + 3vw);
+  }
+    .pagetop h3 {
+    font-size: calc(1.3rem + 0.5vw);
+  }
+
+  #scratcher-box {
+    position:absolute;
+    width: 19em;
+    height: 19em; 
+    top: 76%;
+  }
+  
+} 
+
+@media (max-width: 320px) { 
+   .pagetop h1 {
+    font-size: calc(3rem + 4vw);
+  }
+  .pagetop h3 {
+    font-size: calc(1.2rem + 0.5vw);
+  }
+
+
+  #scratcher-box {
+    position:absolute;
+    width: 14em;
+    height: 14em; 
+    top: 75%;
+  }
+ 
+
 }
 #scratcher-box canvas {
   cursor: grab;
@@ -145,7 +393,7 @@ table {
 }
 #scratcher1, #scratcher2, #scratcher3, #scratcher4, #scratcher5, #scratcher6, #scratcher7, #scratcher8, #scratcher9 {
   width: 100%;
-  padding: 5px;
+  padding: 0px;
   /* border: 1px;
     border-color: #000000;
     border-style: solid; */
@@ -158,7 +406,13 @@ table {
   bottom: 1px;
   right: 1px;
   } 
-
+  .ui-widget-overlay
+  {
+    opacity: .80 !important; /* Make sure to change both of these, as IE only sees the second one */
+    filter: Alpha(Opacity=80) !important;
+  
+    background: rgb(50, 50, 50) !important; /* This will make it darker */
+  }
 #resetbutton {
 border: none;
 padding: 10px 20px;
@@ -202,6 +456,7 @@ button:hover {
 .nosoundbtn, .withsoundbtn {
   float: left;
   width: 50%;
+  
 }
 
 /* Add a color to the cancel button */
@@ -221,61 +476,6 @@ button:hover {
   text-align: center;
 }
 
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: #afafafee;
-  padding-top: 50px;
-}
-
-/* Modal Content/Box */
-.modal-content {
-  background-color: #fefefe;
-  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-  border: 1px solid #888;
-  width: 60%; /* Could be more or less, depending on screen size */
-  word-break: break-word;
-}
-h2 {
-  color: #000000 !important;
-  font-weight: 100;
-  white-space: normal;
-}
-/* Style the horizontal ruler */
-hr {
-  border: 1px solid #f1f1f1;
-  margin-bottom: 25px;
-}
- 
-/* The Modal Close Button (x) */
-.close {
-  position: absolute;
-  right: 35px;
-  top: 15px;
-  font-size: 40px;
-  font-weight: bold;
-  color: #f1f1f1;
-}
-
-.close:hover,
-.close:focus {
-  color: #f44336;
-  cursor: pointer;
-}
-
-/* Clear floats */
-.clearfix::after {
-  content: "";
-  clear: both;
-  display: table;
-}
 
 /* Change styles for cancel button and delete button on extra small screens */
 @media screen and (max-width: 360px) {
