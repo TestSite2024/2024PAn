@@ -179,6 +179,8 @@ var scratchers = [];
         else {
             $("#baby").text('the family!');
             surname = "the";
+            document.getElementById('surname').style.fontWeight="normal";
+
         }
         // backgrnd = params.get('back');
         // if (backgrnd != null) {
@@ -188,7 +190,9 @@ var scratchers = [];
         //     document.getElementsByTagName("body")[0].style.backgroundImage = 'url(images/background.jpg)';
         // }
 
-        document.getElementById('intro').innerHTML = "This scratch off surprise card for <strong>" + surname + "</strong> family contains sound when the surprise is revealed. Do you want to continue with sound?";
+        //document.getElementById('intro').innerHTML = "This scratch off surprise card for <strong>" + surname + "</strong> family contains sound when the surprise is revealed. Do you want to continue with sound?";
+        document.getElementById('surname').innerHTML= surname;
+
         document.getElementById('id01').style.display = 'block';
         $('.nosoundbtn').on("click", function (e) {
             document.getElementById('id01').style.display = 'none';
