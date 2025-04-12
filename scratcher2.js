@@ -237,8 +237,7 @@ Scratcher = (function() {
         //var offCanvas = document.createElement('canvas');
         var w = this.canvas.temp.width;
         var h =this.canvas.temp.height;
-        var background = new Image();
-        background.src = '/images/scratch.png';
+       
         // Step 1: clear the temp
         this.canvas.temp.width = this.canvas.temp.width; // resizing clears
         this.canvas.main.width = this.canvas.main.width; // resizing clears
@@ -324,8 +323,6 @@ Scratcher = (function() {
         mainctx.globalCompositeOperation = 'source-over';
 
         mainctx.drawImage(this.canvas.temp, 0, 0);
-        mainctx.drawImage(background,0,0,w,h);
-
 
     };
     function drawRect(context,x,y,width,height) {
